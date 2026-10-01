@@ -1351,4 +1351,9 @@ debug_enabled = true
 [node name="IdleMovementTimeout" type="Timer" parent="."]
 wait_time = 3.0
 
+[node name="ReloadTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
 [connection signal="timeout" from="IdleMovementTimeout" to="." method="_on_idle_movement_timeout_timeout"]
+[connection signal="timeout" from="ReloadTimer" to="." method="_on_reload_timer_timeout"]

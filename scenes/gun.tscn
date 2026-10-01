@@ -256,11 +256,14 @@ tracks/8/path = NodePath(".")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
 "values": [{
 "args": [],
 "method": &"SpawnBullet"
+}, {
+"args": [],
+"method": &"useBullet"
 }]
 }
 tracks/9/type = "value"
@@ -508,11 +511,14 @@ tracks/8/path = NodePath(".")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
 "values": [{
 "args": [],
 "method": &"SpawnBullet"
+}, {
+"args": [],
+"method": &"useBullet"
 }]
 }
 tracks/9/type = "value"
@@ -696,11 +702,14 @@ tracks/8/path = NodePath(".")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
 "values": [{
 "args": [],
 "method": &"SpawnBullet"
+}, {
+"args": [],
+"method": &"useBullet"
 }]
 }
 tracks/9/type = "value"

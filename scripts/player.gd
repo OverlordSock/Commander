@@ -23,7 +23,7 @@ func _ready() -> void:
 # Called every frame
 func _process(delta: float) -> void:
 	# Attack if the player is pressing the shoot key, works for single presses and holding the key down
-	if Input.is_action_pressed("shoot"):
+	if Input.is_action_pressed("shoot") and !dead:
 		weapon.Shoot()
 
 # Function to handle dealing damage to the player, called from the bullet script
@@ -34,7 +34,7 @@ func takeDamage(damageValue, damageOrigin):
 		# Set the player as invulnerable (damage cooldown)
 		var invuln = true
 		# Update the player health value and the healthbar
-		playerHealth -= damageValue
+		playerHealth = playerHealth - damageValue
 		healthbar._health = playerHealth
 		# Play the hurt animation and start the damage cooldown timer
 		anim_tree.get("parameters/playback").travel("Hurt")

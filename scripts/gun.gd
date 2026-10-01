@@ -26,6 +26,8 @@ const BULLET = preload("res://scenes/bullet.tscn")
 var _selectedWeapon = "Pistol"
 var _attackType = "Pistol_Attack"
 
+var magSize = 0
+
 # Ready function activates the animation state machine and gets the playback as soon as the scene is created
 # This ensures the animation playback is instantiated before calling methods on it
 func _ready() -> void:
@@ -65,7 +67,15 @@ func SwitchWeapon(selected: String):
 func Shoot():
 	# Move the gun animation to the matching shooting animation
 	_animStateMachine.travel(_attackType)
-	
+
+# Function to decrease magSize
+func useBullet():
+	magSize -= 1
+
+# Function to reload magazine
+func reload(bullets):
+	magSize = bullets
+
 # Function to spawn bullets, called from the GunAnimationPlayer
 func SpawnBullet():
 	_gunSFX.play(0.0)

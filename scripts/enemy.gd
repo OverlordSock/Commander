@@ -12,6 +12,8 @@ class_name Enemy
 @onready var attackType : String = selectedWeapon + "_Attack"
 var weaponRange = 0
 var canShoot = false
+var reloading = false
+var magSize = 1
 
 # Enemy stat variables
 @onready var healthbar = $Healthbar
@@ -34,7 +36,6 @@ var damagedByPlayer = false
 var navigationDirection = Vector2.ZERO
 var playerLastPosition = Vector2.ZERO
 var homePosition = Vector2.ZERO
-var returningHome = false
 
 # Mutation variables
 var mutations : Array[Mutation] = []
@@ -42,6 +43,10 @@ var goodFriend = false # Avoids friendly fire when true
 
 # Initialise the enemy variables on enemy instantiation
 func _ready() -> void:
+	# Mutations init
+	if !mutations.is_empty():
+		for mutation : Mutation in mutations:
+			mutation.apply(self)
 	# Home position init
 	homePosition = global_position
 	# Healthbar init
@@ -53,10 +58,19 @@ func _ready() -> void:
 	weapon.aimTarget = player
 	if selectedWeapon == "Pistol":
 		weaponRange = 1000
+		# init magSize * intended magSize to let Dakka Dakka Dakka apply properly, will make the init magSize 2
+		# so * 2 mag instead of * 1
+		magSize = magSize * 7
+		# Initialise magCount, the actual count of bullets in the magazine
+		weapon.magSize = magSize
 	elif selectedWeapon == "SMG":
 		weaponRange = 750
+		magSize = magSize * 15
+		weapon.magSize = magSize
 	elif selectedWeapon == "Shotgun":
 		weaponRange = 500
+		magSize = magSize * 2
+		weapon.magSize = magSize
 
 # Called every frame
 func _process(delta: float) -> void:
@@ -96,25 +110,17 @@ func _physics_process(delta: float) -> void:
 	# If the enemy can see the player, update their movement goal to the player position
 	if playerVisible:
 		navigator.target_position = playerLastPosition
-		returningHome = false
+		if canShoot and !reloading and !dead:
+			Shoot()
 	# If the enemy cannot see the player and has not reached the player's last known position, move toward it
 	elif !playerVisible and !navigator.is_target_reached():
 		# Set navigation direction to next navigation point
 		navigationDirection = to_local(navigator.get_next_path_position()).normalized()
 		Navigate()
 	# If the enemy cannot see the player and is not yet returning home
-	elif !playerVisible and !returningHome:
+	else:
 		# Stop moving
 		navigationDirection = Vector2.ZERO
-		# Make sure this block only triggers once
-		returningHome = true
-		Navigate()
-		# Start the timer for how long the enemy should wait before stopping the search for the player
-		navTimer.start()
-	elif returningHome and navTimer.is_stopped():
-		# If the enemy has been instructed to return home and the search timer has finished
-		# navigate back to the home position (Set when timer finishes)
-		navigationDirection = to_local(navigator.get_next_path_position()).normalized()
 		Navigate()
 
 # Tell the enemy navigation agent to return to the enemy home position if the player has not been seen for 3 seconds
@@ -160,6 +166,17 @@ func takeDamage(damageValue, damageOrigin):
 		if enemyHealth <= 0:
 			Die()
 
+# Function for enemy shooting
+func Shoot():
+	# Bullets remaining
+	if weapon.magSize > 0:
+		# Shoot and remove 1 bullet
+		weapon.Shoot()
+	# No bullets remaining, reload
+	else:
+		reloading = true
+		$ReloadTimer.start()
+
 # Damage cooldown timer finishes
 func _on_damage_cooldown_timeout() -> void:
 	# Remove the damage cooldown to allow the enemy to be damaged again
@@ -177,3 +194,8 @@ func Die():
 	collision.set_deferred("disabled", true)
 	hitbox.set_deferred("monitorable", false)
 	hitbox.set_deferred("monitoring", false)
+
+func _on_reload_timer_timeout() -> void:
+	if !dead:
+		weapon.reload(magSize)
+		reloading = false

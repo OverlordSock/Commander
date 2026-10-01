@@ -1332,6 +1332,7 @@ offset_top = 60.0
 offset_right = 150.0
 offset_bottom = 64.0
 scale = Vector2(0.75, 0.75)
+max_value = 300.0
 
 [node name="Hitbox" type="Area2D" parent="."]
 script = ExtResource("5_5qyrc")
