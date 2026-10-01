@@ -1,0 +1,72 @@
+[gd_scene load_steps=11 format=3 uid="uid://byitp47b35pf7"]
+
+[ext_resource type="Texture2D" uid="uid://b0kurjjqve426" path="res://assets/Weapons/Bullet.png.png" id="1_cbu20"]
+[ext_resource type="Script" path="res://scripts/bullet.gd" id="2_0lu8b"]
+[ext_resource type="PackedScene" uid="uid://pqdhqx0h7t8h" path="res://scenes/sparks.tscn" id="3_nuf6j"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hnyuf"]
+size = Vector2(9, 6)
+
+[sub_resource type="Gradient" id="Gradient_mvkgj"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_t0rtc"]
+gradient = SubResource("Gradient_mvkgj")
+
+[sub_resource type="Curve" id="Curve_tuu1a"]
+max_value = 3.0
+_data = [Vector2(0, 3), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_0j37d"]
+curve = SubResource("Curve_tuu1a")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_he2ej"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(-1, 0, 0)
+spread = 5.0
+initial_velocity_min = 50.0
+initial_velocity_max = 50.0
+gravity = Vector3(0, 0, 0)
+scale_curve = SubResource("CurveTexture_0j37d")
+color_ramp = SubResource("GradientTexture1D_t0rtc")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s8ljq"]
+
+[node name="Bullet" type="Sprite2D"]
+scale = Vector2(2, 2)
+texture = ExtResource("1_cbu20")
+script = ExtResource("2_0lu8b")
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(0.5, 0)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_hnyuf")
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+position = Vector2(-8, 0)
+scale = Vector2(0.3, 0.2)
+
+[node name="BulletTrail" type="GPUParticles2D" parent="."]
+position = Vector2(-3.5, 0)
+amount = 25
+process_material = SubResource("ParticleProcessMaterial_he2ej")
+lifetime = 0.5
+preprocess = 0.1
+
+[node name="HitSparks" parent="." instance=ExtResource("3_nuf6j")]
+
+[node name="ShapeCast2D" type="ShapeCast2D" parent="."]
+position = Vector2(-0.5, 0)
+scale = Vector2(0.25, 0.25)
+shape = SubResource("RectangleShape2D_s8ljq")
+target_position = Vector2(8, 0)
+collision_mask = 2
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenEnabler2D" to="." method="_on_visible_on_screen_enabler_2d_screen_exited"]
