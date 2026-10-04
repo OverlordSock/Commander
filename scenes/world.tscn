@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=4 uid="uid://d3w6cn05735gk"]
+[gd_scene load_steps=9 format=4 uid="uid://d3w6cn05735gk"]
 
 [ext_resource type="Texture2D" uid="uid://o0qw6e3sm5gl" path="res://assets/lab_tileset_LITE.png" id="1_n67c7"]
+[ext_resource type="Script" path="res://scenes/world.gd" id="1_qu8b2"]
 [ext_resource type="PackedScene" uid="uid://dxbva2i4it4xo" path="res://scenes/player.tscn" id="2_55gh2"]
 [ext_resource type="PackedScene" uid="uid://b3o8428c11f7k" path="res://scenes/enemy.tscn" id="4_vngug"]
 
@@ -445,6 +446,7 @@ sources/1 = SubResource("TileSetAtlasSource_jaju5")
 sources/0 = SubResource("TileSetAtlasSource_jrgkb")
 
 [node name="World" type="Node2D"]
+script = ExtResource("1_qu8b2")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 z_index = -1
@@ -458,22 +460,27 @@ position = Vector2(704, 1088)
 [node name="Enemy1" parent="." instance=ExtResource("4_vngug")]
 position = Vector2(1216, 192)
 scale = Vector2(3, 3)
+enemyID = 1
 selectedWeapon = "Shotgun"
 
 [node name="Enemy2" parent="." instance=ExtResource("4_vngug")]
 position = Vector2(128, 384)
 scale = Vector2(3, 3)
+enemyID = 2
 
 [node name="Enemy3" parent="." instance=ExtResource("4_vngug")]
 position = Vector2(608, 160)
 scale = Vector2(3, 3)
-selectedWeapon = "Shotgun"
+enemyID = 3
+selectedWeapon = "SMG"
 
 [node name="Enemy4" parent="." instance=ExtResource("4_vngug")]
 position = Vector2(544, 672)
 scale = Vector2(3, 3)
+enemyID = 4
+selectedWeapon = "Shotgun"
 
 [node name="Enemy5" parent="." instance=ExtResource("4_vngug")]
 position = Vector2(1024, 544)
 scale = Vector2(3, 3)
-selectedWeapon = "SMG"
+enemyID = 4

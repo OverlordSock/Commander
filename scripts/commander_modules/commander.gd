@@ -2,6 +2,16 @@ extends Node
 
 var lastRoundReports : Array[PerformanceReport] = []
 var thisRoundReports : Array[PerformanceReport] = []
+var mutationBundles : Array[MutationBundle] = []
+
+# Function to return changes to enemies at the end of the level, called by the World script to display to GUI
+# Changes can be determined easily from the mutationBundles list, as by the time this method is called, all enemies
+# have been evaluated and their bundles will be up to date. Changes to mutations can be determined by the success
+# field in the mutation, e.g. successful = true means the mutation was not replaced, vice versa
+# So we can just return the array of bundles for the GUI to format and display
+# Also used by the World script to reassign bundles to enemies
+func getBundles():
+	return mutationBundles
 
 # Function to process a performance report
 func report(report: PerformanceReport):
@@ -10,6 +20,22 @@ func report(report: PerformanceReport):
 	var enemy = report.enemy
 	# Evaluate the enemy's mutations, or assign them if they do not have any
 	evaluateMutations(enemy, report)
+	# Cache enemy mutations list with a mutation bundle, but make sure there is only one for this enemy
+	# No mutations, fine to append
+	if mutationBundles.is_empty():
+		mutationBundles.append(MutationBundle.new(enemy.enemyID, enemy.mutations))
+	else:
+		# Check for an existing bundle to replace
+		var matched = false
+		for i in range(mutationBundles.size()):
+			if mutationBundles[i].enemyID == enemy.enemyID:
+				# Found a match, replace it and break early
+				mutationBundles[i] = MutationBundle.new(enemy.enemyID, enemy.mutations)
+				matched = true
+				break
+		if !matched:
+			# No match found, can append
+			mutationBundles.append(MutationBundle.new(enemy.enemyID, enemy.mutations))
 
 # Function to evaluate the mutations of an enemy, or assign them if they do not have any
 func evaluateMutations(enemy, report):
@@ -108,26 +134,30 @@ func checkMutationSuccess(enemy : Enemy, mutation : Mutation, newReport : Perfor
 	else:
 		for oldReport in lastRoundReports:
 			# Find the report for this enemy from last round
-			if oldReport.enemy == enemy:
+			if oldReport.enemyID == enemy.enemyID:
 				# If the mutation in question if offensive, evaluate the damage the enemy did to the player
 				if mutation.mutationType == "Offensive":
 					# If the enemy improved the damage they dealt to the player, mutation is successful
 					if oldReport.damageDealtToPlayer < newReport.damageDealtToPlayer:
+						mutation.successful = true
 						return true
 				# If the mutation in question if defensive, evaluate if the enemy did the minimum reasonable damage to the player
 				elif mutation.mutationType == "Defensive":
 					# If the player dealt the expected minimum amount of damage to the player
 					if newReport.damageDealtToPlayer > 50:
+						mutation.successful = true
 						return true
 				# If the mutation in question is tactical, evaluate which mutation it is and check success condition
 				elif mutation.mutationType == "Tactical":
 					if mutation.mutationName == "Good Friend":
 						# Good Friend, check if enemy has reduced friendly fire incidents
 						if oldReport.friendlyFireIncidents > newReport.friendlyFireIncidents:
+							mutation.successful = true
 							return true
 					elif mutation.mutationName == "Artful Dodger":
 						# Artful Dodger, check if damage from friendly fire has reduced (100 - damageTakenFromPlayer)
 						if (100 - oldReport.damageTakenFromPlayer) >= (100 - newReport.damageTakenFromPlayer):
+							mutation.successful = true
 							return true
 					elif mutation.mutationName == "Copycat":
 						# If the enemy has Copycat, they should make sure they are using the gun they were defeated

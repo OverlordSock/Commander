@@ -7,10 +7,11 @@ var damageDealtToPlayer : int
 var friendlyFireIncidents : int
 var damageTakenFromPlayer : int
 var mostUsedPlayerGun : String
+var enemyID : int
 
 # Constructor for performance report
 func _init(
-# Which enemy this report is for
+# Node reference to the enemy
 enemy : Node,
 # How much damage this enemy dealt to the player
 damageDealtToPlayer : int,
@@ -19,7 +20,9 @@ friendlyFireIncidents : int,
 # How much damage the enemy took from the player (less than their total health means another enemy hit them)
 damageTakenFromPlayer : int,
 # Which gun the player primarily used to damage the enemy
-mostUsedPlayerGun : String
+mostUsedPlayerGun : String,
+# A persistent identifier for this enemy
+enemyID: int
 ) -> void:
 	# Set fields
 	self.enemy = enemy
@@ -27,3 +30,4 @@ mostUsedPlayerGun : String
 	self.friendlyFireIncidents = friendlyFireIncidents
 	self.damageTakenFromPlayer = damageTakenFromPlayer
 	self.mostUsedPlayerGun = mostUsedPlayerGun
+	self.enemyID = enemyID

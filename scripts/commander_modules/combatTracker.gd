@@ -7,6 +7,13 @@ var enemies : Array[Enemy] = []
 # Array to store events related to a particular enemy, overwritten per enemy processed for memory efficiency
 var enemy_events : Array[CombatEvent] = []
 
+# Function to refresh the CombatTracker
+func refresh():
+	# Remove old combat events (no longer relevant)
+	combat_events.clear()
+	# Remove old enemy references (references have changed)
+	enemies.clear()
+
 # Function to record combat events
 func recordEvent(event : CombatEvent):
 	combat_events.append(event)
@@ -90,7 +97,8 @@ func generatePerformanceReports():
 			damageDealtToPlayer,
 			friendlyFireIncidents,
 			damageTakenFromPlayer,
-			mostUsedPlayerGun
+			mostUsedPlayerGun,
+			enemy.enemyID
 		)
 		# Send report for this enemy to the commander
 		Commander.report(performance)

@@ -1,6 +1,8 @@
 extends CharacterBody2D
 class_name Enemy
 
+@export var enemyID : int
+
 # Onready variables to refer to nodes once they are instantiated
 @onready var anim_tree = $AnimationTree
 @onready var player = $"../Player"
@@ -125,7 +127,9 @@ func _physics_process(delta: float) -> void:
 
 # Tell the enemy navigation agent to return to the enemy home position if the player has not been seen for 3 seconds
 func _on_idle_movement_timeout_timeout() -> void:
-	navigator.target_position = homePosition
+	# TODO fix enemy idle movement
+	# navigator.target_position = homePosition
+	pass
 
 # Function to update player velocity and play the appropriate animation and apply animation direction
 func Navigate():
