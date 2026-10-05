@@ -64,6 +64,11 @@ func evaluateMutations(enemy, report):
 			var mutationIndex = enemy.mutations.find(mutation)
 			# Replace the mutation with a new mutation of the same type
 			enemy.mutations[mutationIndex] = assignMutation(mutation.mutationType, report)
+	var thirdMutation = "none"
+	if enemy.mutations.count() == 3:
+		thirdMutation = enemy.mutations[2].mutationName
+	print("Enemy ",enemy.enemyID," assigned ",enemy.mutations[0].mutationName,", ",
+	enemy.mutations[1].mutationName,", ", thirdMutation)
 
 # Function to assign mutations to an enemy for the first time
 func assignFirstMutations(enemy : Enemy, report : PerformanceReport):
@@ -166,3 +171,13 @@ func checkMutationSuccess(enemy : Enemy, mutation : Mutation, newReport : Perfor
 						return true
 		# No successful mutation
 		return false
+
+# Function to archive current round reports to lastRoundReports and clear thisRoundReports
+# Doing it this way is more memory efficient, reusing the same array references instead of making new ones
+func shuffleReports():
+	# Clear old reports
+	lastRoundReports.clear()
+	# Append all elements in thisRoundReports into lastRoundReports (archiving the current reports)
+	lastRoundReports.append_array(thisRoundReports)
+	# Clear thisRoundReports to make it ready for new reports
+	thisRoundReports.clear()

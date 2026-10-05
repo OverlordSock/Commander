@@ -6,6 +6,7 @@ class_name Enemy
 # Onready variables to refer to nodes once they are instantiated
 @onready var anim_tree = $AnimationTree
 @onready var player = $"../Player"
+@onready var world = get_parent()
 
 # Enemy weapon settings, adds custom dropdown box to the enemy settings to choose one of 3 weapons for the enemy
 @onready var weapon = $Gun
@@ -42,13 +43,15 @@ var homePosition = Vector2.ZERO
 # Mutation variables
 var mutations : Array[Mutation] = []
 var goodFriend = false # Avoids friendly fire when true
+var mutationsApplied = false
 
 # Initialise the enemy variables on enemy instantiation
 func _ready() -> void:
 	# Mutations init
-	if !mutations.is_empty():
+	if !mutations.is_empty() and !mutationsApplied:
 		for mutation : Mutation in mutations:
 			mutation.apply(self)
+		mutationsApplied = true
 	# Home position init
 	homePosition = global_position
 	# Healthbar init
@@ -73,6 +76,12 @@ func _ready() -> void:
 		weaponRange = 500
 		magSize = magSize * 2
 		weapon.magSize = magSize
+
+# Function to apply enemy mutations
+func applyMutations():
+	for mutation : Mutation in mutations:
+		mutation.apply(self)
+	mutationsApplied = true
 
 # Called every frame
 func _process(delta: float) -> void:
@@ -198,6 +207,7 @@ func Die():
 	collision.set_deferred("disabled", true)
 	hitbox.set_deferred("monitorable", false)
 	hitbox.set_deferred("monitoring", false)
+	world.enemyDeath()
 
 func _on_reload_timer_timeout() -> void:
 	if !dead:
