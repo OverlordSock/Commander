@@ -1325,6 +1325,7 @@ parameters/Walk/TimeScale/scale = 0.15
 wait_time = 0.08
 
 [node name="Camera2D" type="Camera2D" parent="."]
+scale = Vector2(1.5, 1.5)
 
 [node name="Healthbar" parent="." instance=ExtResource("6_qxsmu")]
 offset_left = -90.0

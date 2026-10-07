@@ -1,0 +1,70 @@
+[gd_scene load_steps=2 format=3 uid="uid://cbm661xbpps76"]
+
+[ext_resource type="Script" path="res://scripts/enemy_stats.gd" id="1_mw6ai"]
+
+[node name="EnemyStats" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -896.0
+offset_bottom = -328.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_mw6ai")
+
+[node name="enemyID" type="Label" parent="."]
+layout_mode = 0
+offset_right = 256.0
+offset_bottom = 32.0
+text = "enemyID"
+horizontal_alignment = 1
+
+[node name="OffensiveLabel" type="Label" parent="."]
+layout_mode = 0
+offset_top = 64.0
+offset_right = 256.0
+offset_bottom = 96.0
+text = "Offensive Mutation"
+horizontal_alignment = 1
+
+[node name="offensiveTitle" type="Button" parent="OffensiveLabel"]
+layout_mode = 0
+offset_top = 32.0
+offset_right = 256.0
+offset_bottom = 64.0
+text = "None"
+
+[node name="DefensiveLabel" type="Label" parent="."]
+layout_mode = 0
+offset_top = 160.0
+offset_right = 256.0
+offset_bottom = 192.0
+text = "Defensive Mutation"
+horizontal_alignment = 1
+
+[node name="defensiveTitle" type="Button" parent="DefensiveLabel"]
+layout_mode = 0
+offset_top = 32.0
+offset_right = 256.0
+offset_bottom = 64.0
+text = "None"
+
+[node name="TacticalLabel" type="Label" parent="."]
+layout_mode = 0
+offset_top = 256.0
+offset_right = 256.0
+offset_bottom = 288.0
+text = "Defensive Mutation"
+horizontal_alignment = 1
+
+[node name="tacticalTitle" type="Button" parent="TacticalLabel"]
+layout_mode = 0
+offset_top = 32.0
+offset_right = 256.0
+offset_bottom = 64.0
+text = "None"
+
+[connection signal="pressed" from="OffensiveLabel/offensiveTitle" to="." method="_on_offensive_title_pressed"]
+[connection signal="pressed" from="DefensiveLabel/defensiveTitle" to="." method="_on_defensive_title_pressed"]
+[connection signal="pressed" from="TacticalLabel/tacticalTitle" to="." method="_on_tactical_title_pressed"]

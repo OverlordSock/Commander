@@ -6,7 +6,7 @@ class_name Enemy
 # Onready variables to refer to nodes once they are instantiated
 @onready var anim_tree = $AnimationTree
 @onready var player = $"../Player"
-@onready var world = get_parent()
+@onready var world : World = self.get_parent()
 
 # Enemy weapon settings, adds custom dropdown box to the enemy settings to choose one of 3 weapons for the enemy
 @onready var weapon = $Gun

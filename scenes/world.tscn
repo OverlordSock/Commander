@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=4 uid="uid://d3w6cn05735gk"]
+[gd_scene load_steps=10 format=4 uid="uid://d3w6cn05735gk"]
 
 [ext_resource type="Texture2D" uid="uid://o0qw6e3sm5gl" path="res://assets/lab_tileset_LITE.png" id="1_n67c7"]
-[ext_resource type="Script" path="res://scenes/world.gd" id="1_qu8b2"]
+[ext_resource type="Script" path="res://scripts/world.gd" id="1_qu8b2"]
 [ext_resource type="PackedScene" uid="uid://dxbva2i4it4xo" path="res://scenes/player.tscn" id="2_55gh2"]
 [ext_resource type="PackedScene" uid="uid://b3o8428c11f7k" path="res://scenes/enemy.tscn" id="4_vngug"]
+[ext_resource type="PackedScene" uid="uid://dovtlwdytmshw" path="res://scenes/menu_ui.tscn" id="5_q3exo"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jrgkb"]
 texture = ExtResource("1_n67c7")
@@ -483,4 +484,15 @@ selectedWeapon = "Shotgun"
 [node name="Enemy5" parent="." instance=ExtResource("4_vngug")]
 position = Vector2(1024, 544)
 scale = Vector2(3, 3)
-enemyID = 4
+enemyID = 5
+
+[node name="UIBackground" type="ColorRect" parent="."]
+z_index = 1
+offset_left = -2048.0
+offset_top = -1024.0
+offset_right = 3072.0
+offset_bottom = 2048.0
+color = Color(0, 0, 0, 1)
+
+[node name="MenuUI" parent="." instance=ExtResource("5_q3exo")]
+layer = 5

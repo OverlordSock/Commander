@@ -1,0 +1,160 @@
+[gd_scene load_steps=7 format=3 uid="uid://dovtlwdytmshw"]
+
+[ext_resource type="Script" path="res://scripts/menu_ui.gd" id="1_utf1u"]
+[ext_resource type="PackedScene" uid="uid://cbm661xbpps76" path="res://scenes/enemy_stats.tscn" id="2_8clp8"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_8ucyd"]
+font_color = Color(1, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_prwnf"]
+font_color = Color(0, 1, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ynbnw"]
+font_size = 40
+font_color = Color(1, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_j7vc4"]
+font_size = 40
+font_color = Color(0, 1, 0, 1)
+
+[node name="MenuUI" type="CanvasLayer"]
+script = ExtResource("1_utf1u")
+
+[node name="PlayButton" type="Button" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -32.0
+offset_right = 128.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+action_mode = 0
+text = "PLAY"
+
+[node name="Title" type="Label" parent="."]
+visible = false
+offset_top = 32.0
+offset_right = 1152.0
+offset_bottom = 64.0
+text = "Commander Evaluation"
+horizontal_alignment = 1
+uppercase = true
+
+[node name="Description" type="Label" parent="."]
+visible = false
+offset_top = 64.0
+offset_right = 1152.0
+offset_bottom = 96.0
+text = "The Commander evaluated the performance of all enemies, replacing unsuccessful mutations:"
+horizontal_alignment = 1
+
+[node name="RedInfo" type="Label" parent="."]
+visible = false
+offset_top = 128.0
+offset_right = 576.0
+offset_bottom = 160.0
+text = "Unsuccessful mutations are labelled in RED"
+label_settings = SubResource("LabelSettings_8ucyd")
+horizontal_alignment = 1
+
+[node name="GreenInfo" type="Label" parent="."]
+visible = false
+offset_left = 576.0
+offset_top = 128.0
+offset_right = 1152.0
+offset_bottom = 160.0
+text = "Successful mutations are labelled in GREEN"
+label_settings = SubResource("LabelSettings_prwnf")
+horizontal_alignment = 1
+
+[node name="EnemyStats1" parent="." instance=ExtResource("2_8clp8")]
+visible = false
+offset_left = 32.0
+offset_top = 192.0
+offset_right = -864.0
+offset_bottom = -136.0
+scale = Vector2(0.75, 0.75)
+
+[node name="EnemyStats2" parent="." instance=ExtResource("2_8clp8")]
+visible = false
+offset_left = 256.0
+offset_top = 192.0
+offset_right = -640.0
+offset_bottom = -136.0
+scale = Vector2(0.75, 0.75)
+
+[node name="EnemyStats3" parent="." instance=ExtResource("2_8clp8")]
+visible = false
+offset_left = 480.0
+offset_top = 192.0
+offset_right = -416.0
+offset_bottom = -136.0
+scale = Vector2(0.75, 0.75)
+
+[node name="EnemyStats4" parent="." instance=ExtResource("2_8clp8")]
+visible = false
+offset_left = 704.0
+offset_top = 192.0
+offset_right = -192.0
+offset_bottom = -136.0
+scale = Vector2(0.75, 0.75)
+
+[node name="EnemyStats5" parent="." instance=ExtResource("2_8clp8")]
+visible = false
+offset_left = 928.0
+offset_top = 192.0
+offset_right = 32.0
+offset_bottom = -136.0
+scale = Vector2(0.75, 0.75)
+
+[node name="MutationDescription" type="Label" parent="."]
+visible = false
+offset_top = 480.0
+offset_right = 1152.0
+offset_bottom = 544.0
+text = "Click a mutation name to display the mutation description"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="RestartButton" type="Button" parent="."]
+visible = false
+offset_left = 448.0
+offset_top = 576.0
+offset_right = 704.0
+offset_bottom = 608.0
+text = "NEW ROUND"
+
+[node name="Defeat" type="Label" parent="."]
+visible = false
+offset_right = 1152.0
+offset_bottom = 640.0
+text = "DEFEAT"
+label_settings = SubResource("LabelSettings_ynbnw")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Victory" type="Label" parent="."]
+visible = false
+offset_right = 1152.0
+offset_bottom = 640.0
+text = "VICTORY"
+label_settings = SubResource("LabelSettings_j7vc4")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ContinueButton" type="Button" parent="."]
+visible = false
+offset_left = 480.0
+offset_top = 384.0
+offset_right = 672.0
+offset_bottom = 416.0
+text = "Continue"
+
+[connection signal="pressed" from="PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="ContinueButton" to="." method="_on_continue_button_pressed"]

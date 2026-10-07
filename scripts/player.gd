@@ -8,6 +8,7 @@ class_name Player
 @onready var damageTimer = $DamageCooldown
 @onready var collision = $Collision
 @onready var hitbox = $Hitbox
+@onready var world : World = self.get_parent()
 
 # Player stat variables
 const SPEED = 300.0
@@ -62,6 +63,8 @@ func Die():
 	collision.set_deferred("disabled", true)
 	hitbox.set_deferred("monitorable", false)
 	hitbox.set_deferred("monitoring", false)
+	# End the level with win = false
+	world.endLevel(false)
 
 # Handles any key presses
 func _unhandled_input(event: InputEvent) -> void:
