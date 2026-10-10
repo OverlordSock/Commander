@@ -13,7 +13,7 @@ class_name Player
 # Player stat variables
 const SPEED = 300.0
 var selectedWeapon = "Pistol"
-var playerHealth = 300
+var playerHealth = 500
 var invuln = false
 var dead = false
 

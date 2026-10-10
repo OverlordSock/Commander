@@ -28,9 +28,8 @@ func prepEnemies():
 			enemies.append(child)
 	# Update enemy count
 	enemyCount = enemies.size()
-	
 	# Reassign mutations to enemies
-	if !Commander.getBundles().is_empty() and enemies.size() < 0:
+	if !Commander.getBundles().is_empty() and enemies.size() > 0:
 		reassignMutations(enemies)
 
 # Function to reassign mutations to enemies

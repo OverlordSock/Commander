@@ -55,7 +55,7 @@ layout_mode = 0
 offset_top = 256.0
 offset_right = 256.0
 offset_bottom = 288.0
-text = "Defensive Mutation"
+text = "Tactical Mutation"
 horizontal_alignment = 1
 
 [node name="tacticalTitle" type="Button" parent="TacticalLabel"]

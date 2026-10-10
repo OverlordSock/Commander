@@ -39,20 +39,27 @@ func report(report: PerformanceReport):
 
 # Function to evaluate the mutations of an enemy, or assign them if they do not have any
 func evaluateMutations(enemy, report):
+	var hasOffensive : bool = false
+	var hasDefensive : bool = false
 	if enemy.mutations.is_empty():
+		print("Empty mutations list")
 		assignFirstMutations(enemy, report)
 		return
-	elif enemy.mutations.count() < 3:
+	elif enemy.mutations.size() < 3:
 		# Enemy does not have one of each mutation and must be given a new one
 		# This will either be offensive or defensive as tactical is always assigned first
 		for mutation : Mutation in enemy.mutations:
 			# Check for an offensive or defensive mutation to determine which one is missing
 			if mutation.mutationType == "Offensive":
 				# Found an offensive mutation, add a defensive one
-				enemy.mutations.append(assignMutation("Defensive", report))
+				hasOffensive = true
 			elif mutation.mutationType == "Defensive":
 				# Found a defensive mutation, add an offensive one
-				enemy.mutations.append(assignMutation("Offensive", report))
+				hasDefensive = true
+		if hasOffensive and !hasDefensive:
+			enemy.mutations.append(assignMutation("Defensive", report))
+		elif !hasOffensive and hasDefensive:
+			enemy.mutations.append(assignMutation("Offensive", report))
 	# Enemy has three mutations, evaluate them
 	# BUG This will evaluate the new mutation, which has not had time to take effect and so it will likely be considered
 	# unsuccessful and pick a new variant, which is fine because the variant it has is not important yet
@@ -65,7 +72,7 @@ func evaluateMutations(enemy, report):
 			# Replace the mutation with a new mutation of the same type
 			enemy.mutations[mutationIndex] = assignMutation(mutation.mutationType, report)
 	var thirdMutation = "none"
-	if enemy.mutations.count() == 3:
+	if enemy.mutations.size() == 3:
 		thirdMutation = enemy.mutations[2].mutationName
 	print("Enemy ",enemy.enemyID," assigned ",enemy.mutations[0].mutationName,", ",
 	enemy.mutations[1].mutationName,", ", thirdMutation)
@@ -134,16 +141,21 @@ func assignMutation(mutationType : String, report : PerformanceReport):
 
 # Function to check if the mutation an enemy has was successful in improving their performance
 func checkMutationSuccess(enemy : Enemy, mutation : Mutation, newReport : PerformanceReport):
+	print("Checking mutation success")
 	# If there are no performance reports from the last round, then this is the first round and there are no successful mutations
-	if lastRoundReports.is_empty(): return false
+	if lastRoundReports.is_empty(): 
+		return false
+		print("Empty reports")
 	else:
 		for oldReport in lastRoundReports:
+			print("Checking report")
 			# Find the report for this enemy from last round
 			if oldReport.enemyID == enemy.enemyID:
+				print("Matched enemy to old report")
 				# If the mutation in question if offensive, evaluate the damage the enemy did to the player
 				if mutation.mutationType == "Offensive":
 					# If the enemy improved the damage they dealt to the player, mutation is successful
-					if oldReport.damageDealtToPlayer < newReport.damageDealtToPlayer:
+					if newReport.damageDealtToPlayer > 50:
 						mutation.successful = true
 						return true
 				# If the mutation in question if defensive, evaluate if the enemy did the minimum reasonable damage to the player
@@ -167,10 +179,12 @@ func checkMutationSuccess(enemy : Enemy, mutation : Mutation, newReport : Perfor
 					elif mutation.mutationName == "Copycat":
 						# If the enemy has Copycat, they should make sure they are using the gun they were defeated
 						# with as Copycat does not have a success condition, and is always considered successful
+						mutation.successful = true
 						mutation.weapon = newReport.mostUsedPlayerGun
 						return true
-		# No successful mutation
-		return false
+				print("Mutation unsuccessful")
+				# No successful mutation
+				return false
 
 # Function to archive current round reports to lastRoundReports and clear thisRoundReports
 # Doing it this way is more memory efficient, reusing the same array references instead of making new ones

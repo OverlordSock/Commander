@@ -1346,7 +1346,6 @@ target_position = Vector2(64, 0)
 path_desired_distance = 3.0
 target_desired_distance = 3.0
 path_postprocessing = 1
-debug_enabled = true
 
 [node name="IdleMovementTimeout" type="Timer" parent="."]
 wait_time = 3.0
